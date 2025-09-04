@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M TECH | BETA PROJECT</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            100: '#f0f9ff',
+                            200: '#e0f2fe',
+                            300: '#bae6fd',
+                            400: '#7dd3fc',
+                            500: '#38bdf8',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        secondary: {
+                            100: '#f5f3ff',
+                            200: '#ede9fe',
+                            300: '#ddd6fe',
+                            400: '#c4b5fd',
+                            500: '#a78bfa',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        }
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'gradient-y': 'gradient-y 15s ease infinite',
+                        'gradient-xy': 'gradient-xy 15s ease infinite',
+                        'pulse-slow': 'pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            }
+                        },
+                        'gradient-y': {
+                            '0%, 100%': {
+                                'background-size': '400% 400%',
+                                'background-position': 'center top'
+                            },
+                            '50%': {
+                                'background-size': '400% 400%',
+                                'background-position': 'center bottom'
+                            }
+                        },
+                        'gradient-xy': {
+                            '0%, 100%': {
+                                'background-size': '400% 400%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '400% 400%',
+                                'background-position': 'right center'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(-45deg, #0ea5e9, #6366f1, #ec4899, #f59e0b);
+            background-size: 400% 400%;
+            animation: gradient-xy 15s ease infinite;
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .cart-item-add {
+            animation: cartAdd 0.5s ease-out forwards;
+        }
+        
+        @keyframes cartAdd {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #f59e0b, #ec4899, #6366f1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 300% 300%;
+            animation: gradient-x 5s ease infinite;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Navigation -->
+    <nav class="glass-nav fixed w-full z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl font-bold gradient-text">M TECH</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#" class="hover:text-primary-300 transition">Home</a>
+                <a href="#" class="hover:text-primary-300 transition">Shop</a>
+                <a href="#" class="hover:text-primary-300 transition">Collections</a>
+                <a href="#" class="hover:text-primary-300 transition">About</a>
+                <a href="#" class="hover:text-primary-300 transition">Contact</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button class="relative">
+                    <i data-feather="shopping-cart"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-primary-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </button>
+                <button class="md:hidden">
+                    <i data-feather="menu"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div data-aos="fade-right">
+                <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">KA GADO <span class="gradient-text">M TECH</span></h1>
+                <p class="text-lg mb-8 opacity-90">THIS IS A DEMO PROJECT</p>
+                <div class="flex space-x-4">
+                    <button class="glass-card px-8 py-3 rounded-full font-medium hover:bg-white hover:bg-opacity-20 transition">Shop Now</button>
+                    <button class="glass-card px-8 py-3 rounded-full font-medium hover:bg-white hover:bg-opacity-20 transition">Explore</button>
+                </div>
+            </div>
+            <div data-aos="fade-left" class="relative">
+                <div class="absolute -top-10 -left-10 w-64 h-64 bg-primary-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+                <div class="absolute -bottom-10 -right-10 w-64 h-64 bg-secondary-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+                <div class="relative">
+                    <img src="http://static.photos/technology/1200x630/42" alt="Hero Shoe" class="w-full h-auto rounded-2xl glass-card transform rotate-6">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="py-16 px-6">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold mb-12 text-center" data-aos="fade-up">Featured Collection</h2>
+            
+            <!-- Layout 1: Asymmetrical Grid -->
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="glass-card rounded-2xl p-6 col-span-2 h-96 flex flex-col justify-end relative overflow-hidden" data-aos="fade-right">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60 z-0"></div>
+                    <img src="http://static.photos/black/1024x576/1" alt="Featured Shoe" class="absolute inset-0 w-full h-full object-cover z-0">
+                    <div class="relative z-10">
+                        <h3 class="text-2xl font-bold mb-2">Nebula X</h3>
+                        <p class="text-lg mb-4">Limited Edition</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-bold">$249</span>
+                            <button class="bg-white text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-opacity-90 transition">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-8">
+                    <div class="glass-card rounded-2xl p-6 h-44 flex flex-col justify-end relative overflow-hidden" data-aos="fade-left" data-aos-delay="100">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60 z-0"></div>
+                        <img src="https://p.ledinside.com/led/2024-03/1710832552_67352.JPG" alt="Featured Shoe" class="absolute inset-0 w-full h-full object-cover z-0">
+                        <div class="relative z-10">
+                            <h3 class="text-lg font-bold mb-1">Quantum Edge</h3>
+                            <div class="flex justify-between items-center">
+                                <span class="text-lg font-bold">$189</span>
+                                <button class="bg-white text-black px-3 py-1 rounded-full text-xs font-medium hover:bg-opacity-90 transition">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-card rounded-2xl p-6 h-44 flex flex-col justify-end relative overflow-hidden" data-aos="fade-left" data-aos-delay="200">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60 z-0"></div>
+                        <img src="https://www.idevice.ro/wp-content/uploads/2024/06/Schimbarile-IMPORTANTe-Samsung-GALAXY-S25-Pregatite-Oficial-Samsung.jpg" alt="Featured Shoe" class="absolute inset-0 w-full h-full object-cover z-0">
+                        <div class="relative z-10">
+                            <h3 class="text-lg font-bold mb-1">Aero Glide</h3>
+                            <div class="flex justify-between items-center">
+                                <span class="text-lg font-bold">$169</span>
+                                <button class="bg-white text-black px-3 py-1 rounded-full text-xs font-medium hover:bg-opacity-90 transition">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Layout 2: Uniform Grid with Staggered Animation -->
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="glass-card rounded-2xl p-6 product-card transition duration-300" data-aos="fade-up" data-aos-delay="0">
+                    <div class="relative h-64 mb-4">
+                        <img src="https://tse3.mm.bing.net/th/id/OIP.iWwQvgCtCUthOjsRFsS_oQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3/640x360/4" alt="Product" class="w-full h-full object-contain">
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Phantom Pro</h3>
+                    <p class="text-sm opacity-80 mb-4">Performance running shoes</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg font-bold">$199</span>
+                        <button class="bg-white text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-opacity-90 transition">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="glass-card rounded-2xl p-6 product-card transition duration-300" data-aos="fade-up" data-aos-delay="100">
+                    <div class="relative h-64 mb-4">
+                        <img src="https://gadgeteer.co.za/wp-content/uploads/2023/04/AirPods.jpg" alt="Product" class="w-full h-full object-contain">
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Hyper Stride</h3>
+                    <p class="text-sm opacity-80 mb-4">Lightweight training shoes</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg font-bold">$179</span>
+                        <button class="bg-white text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-opacity-90 transition">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="glass-card rounded-2xl p-6 product-card transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="relative h-64 mb-4">
+                        <img src="https://tse1.mm.bing.net/th/id/OIP.vM06KZL48TiMnQL90PtwpgHaE8?rs=1&pid=ImgDetMain&o=7&rm=3/640x360/6" alt="Product" class="w-full h-full object-contain">
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Cosmic Trail</h3>
+                    <p class="text-sm opacity-80 mb-4">All-terrain hiking shoes</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg font-bold">$219</span>
+                        <button class="bg-white text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-opacity-90 transition">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Layout 3: Masonry Grid -->
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass-card rounded-2xl p-6 product-card transition duration-300 md:mt-8" data-aos="fade-up" data-aos-delay="100">
+                    <div class="relative h-64 mb-4">
+                        <img src="https://img.freepik.com/premium-photo/untitled-design-94_1032298-1243.jpg?semt=ais_hybrid&w=740&q=80" alt="Product" class="w-full h-full object-contain">
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Velocity Pro</h3>
+                    <p class="text-sm opacity-80 mb-4">High-performance running</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg font-bold">$229</span>
+                        <button class="bg-white text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-opacity-90 transition">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="glass-card rounded-2xl p-6 product-card transition duration-300 md:mt-8" data-aos="fade-up" data-aos-delay="100">
+                    <div class="relative h-64 mb-4">
+                        <img src="https://img.freepik.com/premium-photo/untitled-design-94_1032298-1243.jpg?semt=ais_hybrid&w=740&q=80" alt="Product" class="w-full h-full object-contain">
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Velocity Pro</h3>
+                    <p class="text-sm opacity-80 mb-4">High-performance running</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg font-bold">$229</span>
+                        <button class="bg-white text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-opacity-90 transition">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="glass-card rounded-2xl p-6 product-card transition duration-300" data-aos="fade-up" data-aos-delay="200">
+                    <div class="relative h-56 mb-4">
+                        <img src="https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1694544612-61aKemHyO5L.jpg?crop=1xw:1.00xh;center,top&resize=980:*/640x360/9" alt="Product" class="w-full h-full object-contain">
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Skybound</h3>
+                    <p class="text-sm opacity-80 mb-4">Lightweight basketball shoes</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg font-bold">$199</span>
+                        <button class="bg-white text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-opacity-90 transition">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-16 px-6">
+        <div class="max-w-4xl mx-auto glass-card rounded-2xl p-8 text-center" data-aos="fade-up">
+            <h2 class="text-3xl font-bold mb-4">Join Our Community</h2>
+            <p class="mb-8 max-w-2xl mx-auto">Subscribe to our newsletter for exclusive offers, new releases, and style inspiration.</p>
+            <div class="flex flex-col md:flex-row gap-4 max-w-md mx-auto">
+                <input type="email" placeholder="Your email address" class="flex-grow px-4 py-3 rounded-full bg-white bg-opacity-20 backdrop-blur-sm border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-primary-500">
+                <button class="bg-white text-black px-6 py-3 rounded-full font-medium hover:bg-opacity-90 transition">Subscribe</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 glass-nav">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 gradient-text">M TECH</h3>
+                    <p class="opacity-80">Redefining footwear for the modern era with cutting-edge technology and design.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Shop</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="opacity-80 hover:opacity-100 transition">All Products</a></li>
+                        <li><a href="#" class="opacity-80 hover:opacity-100 transition">New Arrivals</a></li>
+                        <li><a href="#" class="opacity-80 hover:opacity-100 transition">Best Sellers</a></li>
+                        <li><a href="#" class="opacity-80 hover:opacity-100 transition">Limited Edition</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="opacity-80 hover:opacity-100 transition">About Us</a></li>
+                        <li><a href="#" class="opacity-80 hover:opacity-100 transition">Sustainability</a></li>
+                        <li><a href="#" class="opacity-80 hover:opacity-100 transition">Careers</a></li>
+                        <li><a href="#" class="opacity-80 hover:opacity-100 transition">Press</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Connect</h4>
+                    <div class="flex space-x-4 mb-4">
+                        <a href="#" class="opacity-80 hover:opacity-100 transition"><i data-feather="instagram"></i></a>
+                        <a href="#" class="opacity-80 hover:opacity-100 transition"><i data-feather="twitter"></i></a>
+                        <a href="#" class="opacity-80 hover:opacity-100 transition"><i data-feather="facebook"></i></a>
+                        <a href="#" class="opacity-80 hover:opacity-100 transition"><i data-feather="youtube"></i></a>
+                    </div>
+                    <p class="opacity-80">support@mtech.com</p>
+                </div>
+            </div>
+            <div class="border-t border-white border-opacity-20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="opacity-80 text-sm">© 2026 M TECH. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="opacity-80 hover:opacity-100 transition text-sm">Privacy Policy</a>
+                    <a href="#" class="opacity-80 hover:opacity-100 transition text-sm">Terms of Service</a>
+                    <a href="#" class="opacity-80 hover:opacity-100 transition text-sm">Shipping Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-96 bg-gray-900 bg-opacity-90 backdrop-filter backdrop-blur-lg z-50 transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-8">
+                <h3 class="text-xl font-bold">Your Cart</h3>
+                <button id="close-cart" class="p-2 rounded-full hover:bg-white hover:bg-opacity-10">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div id="cart-items" class="space-y-4">
+                <!-- Cart items will be added here dynamically -->
+                <p class="text-center opacity-80 py-12">Your cart is empty</p>
+            </div>
+            <div class="border-t border-white border-opacity-20 pt-4 mt-6">
+                <div class="flex justify-between mb-2">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal">$0.00</span>
+                </div>
+                <div class="flex justify-between mb-4">
+                    <span>Shipping</span>
+                    <span>Calculated at checkout</span>
+                </div>
+                <button class="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 rounded-full font-medium transition">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize AOS animations
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+
+        // Initialize Feather Icons
+        feather.replace();
+
+        // Cart functionality
+        let cart = [];
+        let cartCount = 0;
+        let cartTotal = 0;
+
+        // Sample product data
+        const products = [
+            { id: 1, name: 'Nebula X', price: 249, image: 'http://static.photos/black/1024x576/1' },
+            { id: 2, name: 'Quantum Edge', price: 189, image: 'http://static.photos/black/640x360/2' },
+            { id: 3, name: 'Aero Glide', price: 169, image: 'http://static.photos/black/640x360/3' },
+            { id: 4, name: 'Phantom Pro', price: 199, image: 'http://static.photos/black/640x360/4' },
+            { id: 5, name: 'Hyper Stride', price: 179, image: 'http://static.photos/black/640x360/5' },
+            { id: 6, name: 'Cosmic Trail', price: 219, image: 'http://static.photos/black/640x360/6' },
+            { id: 7, name: 'Urban Flex', price: 149, image: 'data:image/jpeg;base64,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' },
+            { id: 8, name: 'Velocity Pro', price: 229, image: 'https://www.apple.com/v/iphone/home/cd/images/meta/iphone__kqge21l9n26q_og.png/640x360/8' },
+            { id: 9, name: 'Skybound', price: 199, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdHtWIYkJf-DfprX2uae7sB0cxEhpOhx5QFQ&sk/640x360/9' }
+        ];
+
+        // Add to cart buttons
+        document.querySelectorAll('button').forEach(button => {
+            if (button.textContent.includes('Add to Cart') || button.textContent === 'Add') {
+                button.addEventListener('click', function() {
+                    const productCard = this.closest('.glass-card');
+                    const productName = productCard.querySelector('h3').textContent;
+                    const productPrice = parseFloat(productCard.querySelector('span').textContent.replace('$', ''));
+                    
+                    // Find product in our sample data
+                    const product = products.find(p => p.name === productName);
+                    
+                    if (product) {
+                        addToCart(product);
+                        
+                        // Animation
+                        this.classList.add('cart-item-add');
+                        setTimeout(() => {
+                            this.classList.remove('cart-item-add');
+                        }, 500);
+                    }
+                });
+            }
+        });
+
+        // Cart functions
+        function addToCart(product) {
+            const existingItem = cart.find(item => item.id === product.id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    ...product,
+                    quantity: 1
+                });
+            }
+            
+            updateCart();
+        }
+
+        function updateCart() {
+            cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+            cartTotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            
+            document.getElementById('cart-count').textContent = cartCount;
+            
+            // Update cart sidebar
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartSubtotal = document.getElementById('cart-subtotal');
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p class="text-center opacity-80 py-12">Your cart is empty</p>';
+            } else {
+                cartItemsContainer.innerHTML = cart.map(item => `
+                    <div class="flex justify-between items-center py-4 border-b border-white border-opacity-10">
+                        <div class="flex items-center space-x-4">
+                            <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
+                            <div>
+                                <h4 class="font-medium">${item.name}</h4>
+                                <p class="text-sm opacity-80">$${item.price} x ${item.quantity}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button class="p-1 rounded-full hover:bg-white hover:bg-opacity-10" onclick="updateQuantity(${item.id}, -1)">
+                                <i data-feather="minus" class="w-4 h-4"></i>
+                            </button>
+                            <span>${item.quantity}</span>
+                            <button class="p-1 rounded-full hover:bg-white hover:bg-opacity-10" onclick="updateQuantity(${item.id}, 1)">
+                                <i data-feather="plus" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Re-initialize feather icons in the cart
+                feather.replace();
+            }
+            
+            cartSubtotal.textContent = `$${cartTotal.toFixed(2)}`;
+        }
+
+        // Global functions for cart
+        window.updateQuantity = function(id, change) {
+            const item = cart.find(item => item.id === id);
+            
+            if (item) {
+                item.quantity += change;
+                
+                if (item.quantity <= 0) {
+                    cart = cart.filter(item => item.id !== id);
+                }
+                
+                updateCart();
+            }
+        };
+
+        // Cart sidebar toggle
+        document.querySelector('button').addEventListener('click', function() {
+            if (this.querySelector('i').getAttribute('data-feather') === 'shopping-cart') {
+                document.getElementById('cart-sidebar').classList.remove('translate-x-full');
+            }
+        });
+
+        document.getElementById('close-cart').addEventListener('click', function() {
+            document.getElementById('cart-sidebar').classList.add('translate-x-full');
+        });
+
+        // Background animation with GSAP
+        gsap.to("body", {
+            backgroundPosition: "50% 100%",
+            duration: 20,
+            repeat: -1,
+            yoyo: true,
+            ease: "none"
+        });
+    </script>
+</body>
+</html>
